@@ -1,3 +1,20 @@
+/*
+ * This file is part of SpoutFlight (https://github.com/Olloth/SpoutFlight).
+ * 
+ * SpoutFlight is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.olloth.plugins.flight;
 
 import java.util.HashMap;
@@ -83,11 +100,11 @@ public class SpoutFlight extends JavaPlugin {
 	public boolean getPlayerFlight(Player player) {
 		return FLIGHT.get(player.getName());
 	}
-	
+
 	public void setPlayerZFlight(Player player, int direction) {
 		ZFLIGHT.put(player.getName(), direction);
 	}
-	
+
 	public int getPlayerZFlight(Player player) {
 		return ZFLIGHT.get(player.getName());
 	}

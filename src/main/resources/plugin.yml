@@ -1,0 +1,11 @@
+authors: [Olloth]
+database: false
+description: Flight for Spout
+main: me.olloth.plugins.flight.SpoutFlight
+name: SpoutFlight
+startup: postworld
+version: '0.9'
+depend: [Spout]
+permissions:
+    spoutflight.fly:
+        default: false

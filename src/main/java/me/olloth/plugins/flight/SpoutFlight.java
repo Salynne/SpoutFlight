@@ -36,7 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SpoutFlight extends JavaPlugin {
 
 	public static final Logger log = Logger.getLogger("Minecraft");
-	public static String PREFIX = "[Flight] ";
+	public static String PREFIX = "[SpoutFlight] ";
 
 	private PluginDescriptionFile info;
 	private PluginManager pm;

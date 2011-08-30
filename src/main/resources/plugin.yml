@@ -10,6 +10,8 @@ depend: [Spout]
 permissions:
     spoutflight.fly:
         default: false
+    spoutflight.nofalldmg:
+        default: false
 commands:
     sfspeed:
      description: Sets your flying speed

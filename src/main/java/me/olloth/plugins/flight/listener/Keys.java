@@ -19,6 +19,7 @@ package me.olloth.plugins.flight.listener;
 
 import me.olloth.plugins.flight.SpoutFlight;
 
+import org.bukkit.util.Vector;
 import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
@@ -35,46 +36,85 @@ public class Keys extends InputListener {
 
 	@Override
 	public void onKeyPressedEvent(KeyPressedEvent event) {
+		if (plugin.getBindMode(event.getPlayer())) {
+			plugin.setPlayerBind(event.getPlayer(), event.getKey().getKeyCode());
+			event.getPlayer().sendMessage("Flight toggle key bound to " + event.getKey().toString());
+			plugin.removeBindMode(event.getPlayer());
+		}
 
-		if (event.getScreenType().toString().equals("GAME_SCREEN") && event.getPlayer().hasPermission("spoutflight.fly")) {
-
+		else if (event.getScreenType().toString().equals("GAME_SCREEN") && event.getPlayer().hasPermission("spoutflight.fly")) {
 			SpoutPlayer player = event.getPlayer();
 
-			if (event.getKey().equals(Keyboard.KEY_LCONTROL)) {
+			if (event.getKey().equals(Keyboard.getKey(plugin.getPlayerBind(player)))) {
 				if (plugin.getPlayerEnabled(player)) {
 					plugin.setPlayerEnabled(player, false);
-					plugin.setPlayerFlight(event.getPlayer(), false);
-					plugin.setPlayerZFlight(event.getPlayer(), 0);
+					player.setAirSpeedMultiplier(1);
 					player.setGravityMultiplier(1);
 					player.setCanFly(false);
-				} else {
+					player.setFallDistance(0);
+
+				}
+
+				else {
 					plugin.setPlayerEnabled(player, true);
 					player.setCanFly(true);
+					player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
 					player.setGravityMultiplier(0);
 				}
+				player.setVelocity(new Vector(0, 0, 0));
+
 			}
 
-			if (event.getKey().equals(player.getForwardKey()) && plugin.getPlayerEnabled(player)) {
-				plugin.setPlayerFlight(player, true);
+			if (plugin.getPlayerEnabled(player)) {
 
-			} else if (event.getKey().equals(player.getJumpKey()) && plugin.getPlayerEnabled(player)) {
-				plugin.setPlayerZFlight(player, 1);
-			} else if (event.getKey().equals(player.getSneakKey()) && plugin.getPlayerEnabled(player)) {
-				plugin.setPlayerZFlight(player, -1);
+				player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
+
+				if (event.getKey().equals(player.getJumpKey())) {
+					player.setGravityMultiplier(-0.1 * plugin.getPlayerSpeed(player));
+				}
+
+				else if (event.getKey().equals(player.getSneakKey())) {
+					player.setGravityMultiplier(0.1 * plugin.getPlayerSpeed(player));
+				}
+
 			}
+
 		}
 
 	}
 
 	@Override
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
-		if (event.getKey().equals(event.getPlayer().getForwardKey())) {
-			plugin.setPlayerFlight(event.getPlayer(), false);
-		} else if (event.getKey().equals(event.getPlayer().getJumpKey())) {
-			plugin.setPlayerZFlight(event.getPlayer(), 0);
-		} else if (event.getKey().equals(event.getPlayer().getSneakKey())) {
-			plugin.setPlayerZFlight(event.getPlayer(), -0);
+		SpoutPlayer player = event.getPlayer();
+
+		if (plugin.getPlayerEnabled(player)) {
+			if (event.getKey().equals(player.getJumpKey())) {
+				player.setGravityMultiplier(0);
+				player.setVelocity(new Vector(0, 0, 0));
+			}
+
+			else if (event.getKey().equals(player.getSneakKey())) {
+				player.setGravityMultiplier(0);
+				player.setVelocity(new Vector(0, 0, 0));
+			}
+
+			else if (event.getKey().equals(player.getForwardKey())) {
+				player.setVelocity(new Vector(0, 0, 0));
+			}
+
+			else if (event.getKey().equals(player.getBackwardKey())) {
+				player.setVelocity(new Vector(0, 0, 0));
+			}
+
+			else if (event.getKey().equals(player.getLeftKey())) {
+				player.setVelocity(new Vector(0, 0, 0));
+			}
+
+			else if (event.getKey().equals(player.getRightKey())) {
+				player.setVelocity(new Vector(0, 0, 0));
+			}
 		}
+
 	}
 
 }

@@ -22,10 +22,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.olloth.plugins.flight.listener.Entities;
 import me.olloth.plugins.flight.listener.Keys;
 import me.olloth.plugins.flight.listener.Players;
 import me.olloth.plugins.flight.listener.Spouts;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -44,14 +47,17 @@ public class SpoutFlight extends JavaPlugin {
 	private Players players;
 	private Spouts spouts;
 	private Keys keys;
+	private Entities entities;
 
-	private static Map<String, Boolean> ENABLED;
-	private static Map<String, Boolean> FLIGHT;
-	private static Map<String, Integer> ZFLIGHT;
+	private Config config;
+
+	private Map<String, Boolean> enabled;
+	private Map<String, Integer> speeds;
+	private Map<String, Integer> binds;
+	private Map<String, Boolean> bindMode;
 
 	public void onDisable() {
-		ENABLED.clear();
-		FLIGHT.clear();
+		config.saveMaps();
 		log.log(Level.INFO, PREFIX + "is now disabled.");
 	}
 
@@ -59,22 +65,25 @@ public class SpoutFlight extends JavaPlugin {
 		info = getDescription();
 		pm = getServer().getPluginManager();
 
-		ENABLED = new HashMap<String, Boolean>();
-		FLIGHT = new HashMap<String, Boolean>();
-		ZFLIGHT = new HashMap<String, Integer>();
+		enabled = new HashMap<String, Boolean>();
+		speeds = new HashMap<String, Integer>();
+		binds = new HashMap<String, Integer>();
+		bindMode = new HashMap<String, Boolean>();
+		config = new Config(this);
 
 		for (Player player : getServer().getOnlinePlayers()) {
-			ENABLED.put(player.getName(), false);
-			FLIGHT.put(player.getName(), false);
-			ZFLIGHT.put(player.getName(), 0);
+			enabled.put(player.getName(), false);
+			speeds.put(player.getName(), config.getDefaultSpeed());
 		}
 
 		players = new Players(this);
-		pm.registerEvent(Type.PLAYER_JOIN, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_TELEPORT, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_BED_ENTER, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_PORTAL, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_RESPAWN, players, Priority.Low, this);
+
+		entities = new Entities(this);
+		pm.registerEvent(Type.ENTITY_DAMAGE, entities, Priority.Low, this);
 
 		spouts = new Spouts(this);
 		pm.registerEvent(Type.CUSTOM_EVENT, spouts, Priority.Low, this);
@@ -85,28 +94,110 @@ public class SpoutFlight extends JavaPlugin {
 		log.log(Level.INFO, PREFIX + "version " + info.getVersion() + " is now enabled.");
 	}
 
+	/**
+	 * Calls when a player uses a command.
+	 */
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		String commandName = command.getName().toLowerCase();
+
+		// Only Players
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(PREFIX + "/" + commandName + " can only be run from in game.");
+			return true;
+		}
+
+		if (commandName.equals("sfspeed")) {
+			Player player = (Player) sender;
+			int speed = Integer.parseInt(args[0]);
+			if (speed < 1) {
+				speed = 1;
+			} else if (speed > 10) {
+				speed = 10;
+			}
+			setPlayerSpeed(player, speed);
+
+			return true;
+		}
+
+		if (commandName.equals("sfbind")) {
+			Player player = (Player) sender;
+			bindMode.put(player.getName(), true);
+			sender.sendMessage("Press any key to bind it to the flight toggle key.");
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setPlayerEnabled(Player player, boolean enable) {
-		ENABLED.put(player.getName(), enable);
+		enabled.put(player.getName(), enable);
 	}
 
 	public boolean getPlayerEnabled(Player player) {
-		return ENABLED.get(player.getName());
+		if (!enabled.containsKey(player.getName())) {
+			setPlayerEnabled(player, false);
+		}
+		return enabled.get(player.getName());
 	}
 
-	public void setPlayerFlight(Player player, boolean enable) {
-		FLIGHT.put(player.getName(), enable);
+	public void setPlayerSpeed(Player player, int speed) {
+		speeds.put(player.getName(), speed);
 	}
 
-	public boolean getPlayerFlight(Player player) {
-		return FLIGHT.get(player.getName());
+	public int getPlayerSpeed(Player player) {
+		if (!speeds.containsKey(player.getName())) {
+			setPlayerSpeed(player, config.getDefaultSpeed());
+		}
+
+		return speeds.get(player.getName());
 	}
 
-	public void setPlayerZFlight(Player player, int direction) {
-		ZFLIGHT.put(player.getName(), direction);
+	public void setPlayerBind(Player player, int bind) {
+		binds.put(player.getName(), bind);
 	}
 
-	public int getPlayerZFlight(Player player) {
-		return ZFLIGHT.get(player.getName());
+	public int getPlayerBind(Player player) {
+		if (!binds.containsKey(player.getName())) {
+			setPlayerBind(player, 29);
+		}
+		return binds.get(player.getName());
 	}
 
+	public boolean getBindMode(Player player) {
+		boolean mode = false;
+
+		if (bindMode.containsKey(player.getName())) {
+			mode = bindMode.get(player.getName());
+		}
+
+		return mode;
+	}
+	
+	public void removeBindMode(Player player) {
+		if(bindMode.containsKey(player.getName())) {
+			bindMode.remove(player.getName());
+		}
+	}
+
+	public void setEnabledMap(Map<String, Boolean> map) {
+		enabled = map;
+	}
+
+	public Map<String, Boolean> getEnabledMap() {
+		return enabled;
+	}
+
+	public void setBindsMap(Map<String, Integer> map) {
+		binds = map;
+	}
+
+	public Map<String, Integer> getBindsMap() {
+		return binds;
+	}
+
+	public Config getConfig() {
+		return config;
+	}
 }

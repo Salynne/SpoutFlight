@@ -1,3 +1,4 @@
+author: Olloth
 authors: [Olloth]
 database: false
 description: Flight for Spout
@@ -9,3 +10,13 @@ depend: [Spout]
 permissions:
     spoutflight.fly:
         default: false
+commands:
+    sfspeed:
+     description: Sets your flying speed
+     usage: /<command> [speed 1-10]
+     aliases: [fly]
+     permission: spoutflight.fly
+    sfbind:
+     description: Sets your keybind for flying
+     usage: /<command>
+     permission: spoutflight.fly

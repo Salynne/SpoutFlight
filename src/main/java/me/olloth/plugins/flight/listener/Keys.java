@@ -19,6 +19,7 @@ package me.olloth.plugins.flight.listener;
 
 import me.olloth.plugins.flight.SpoutFlight;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
@@ -36,13 +37,21 @@ public class Keys extends InputListener {
 
 	@Override
 	public void onKeyPressedEvent(KeyPressedEvent event) {
+		boolean hasPerm;
+		hasPerm=event.getPlayer().hasPermission("spoutflight.fly");
+		Plugin permissionsPlugin = plugin.getServer().getPluginManager().getPlugin("Permissions");
+	
+		if (permissionsPlugin != null) {
+			hasPerm=SpoutFlight.permissionHandler.has(event.getPlayer(), "spoutflight.fly");	    
+		}
+		
 		if (plugin.getBindMode(event.getPlayer())) {
 			plugin.setPlayerBind(event.getPlayer(), event.getKey().getKeyCode());
 			event.getPlayer().sendMessage("Flight toggle key bound to " + event.getKey().toString());
 			plugin.removeBindMode(event.getPlayer());
 		}
 
-		else if (event.getScreenType().toString().equals("GAME_SCREEN") && event.getPlayer().hasPermission("spoutflight.fly")) {
+		else if (event.getScreenType().toString().equals("GAME_SCREEN") && hasPerm) {
 			SpoutPlayer player = event.getPlayer();
 
 			if (event.getKey().equals(Keyboard.getKey(plugin.getPlayerBind(player)))) {

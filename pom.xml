@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.olloth.plugins.flight</groupId>
 	<artifactId>SpoutFlight</artifactId>
-	<version>0.9</version>
+	<version>0.10</version>
 	<name>SpoutFlight</name>
 	<repositories>
 		<repository>

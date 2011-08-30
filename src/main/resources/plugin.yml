@@ -5,7 +5,7 @@ description: Flight for Spout
 main: me.olloth.plugins.flight.SpoutFlight
 name: SpoutFlight
 startup: postworld
-version: '0.10'
+version: '0.11'
 depend: [Spout]
 permissions:
     spoutflight.fly:

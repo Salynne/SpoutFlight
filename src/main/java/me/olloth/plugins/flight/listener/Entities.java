@@ -19,7 +19,15 @@ public class Entities extends EntityListener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getCause().equals(DamageCause.FALL) && event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
-			if (plugin.getPlayerEnabled(player) || player.hasPermission("spoutflight.nofalldmg")) {
+			boolean fallDmgPerm;
+
+			if (plugin.useOldPerms()) {
+				fallDmgPerm = plugin.getOldPermissions().has(player, "spoutflight.nofalldmg");
+			} else {
+				fallDmgPerm = player.hasPermission("spoutflight.nofalldmg");
+			}
+
+			if (plugin.getPlayerEnabled(player) || fallDmgPerm) {
 				event.setCancelled(true);
 			}
 		}

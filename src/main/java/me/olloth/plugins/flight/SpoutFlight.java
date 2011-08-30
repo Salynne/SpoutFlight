@@ -32,12 +32,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SpoutFlight extends JavaPlugin {
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 
+
+
+public class SpoutFlight extends JavaPlugin {
+	
+	public static PermissionHandler permissionHandler;
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static String PREFIX = "[SpoutFlight] ";
 
@@ -60,7 +67,6 @@ public class SpoutFlight extends JavaPlugin {
 		config.saveMaps();
 		log.log(Level.INFO, PREFIX + "is now disabled.");
 	}
-
 	public void onEnable() {
 		info = getDescription();
 		pm = getServer().getPluginManager();
@@ -91,6 +97,17 @@ public class SpoutFlight extends JavaPlugin {
 		keys = new Keys(this);
 		pm.registerEvent(Type.CUSTOM_EVENT, keys, Priority.Low, this);
 
+		if (permissionHandler != null) { return; }
+
+		Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
+
+		if (permissionsPlugin == null) {
+		    log.log(Level.INFO, PREFIX + "Permission system not detected, defaulting to OP");
+		    return;
+		}
+
+		permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+		log.log(Level.INFO, PREFIX + "Found and will use plugin "+((Permissions)permissionsPlugin).getDescription().getFullName());
 		log.log(Level.INFO, PREFIX + "version " + info.getVersion() + " is now enabled.");
 	}
 

@@ -57,6 +57,10 @@ public class Config {
 
 		return speed;
 	}
+	
+	public boolean useOps() {
+		return config.getBoolean("useOps", true);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void loadMaps() {

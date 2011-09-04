@@ -37,12 +37,14 @@ public class Keys extends InputListener {
 	@Override
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		SpoutPlayer player = event.getPlayer();
-		boolean flightPerm;
+		boolean flightPerm = false;
 
 		if (plugin.useOldPerms()) {
 			flightPerm = plugin.getOldPermissions().has(player, "spoutflight.fly");
-		} else {
+		} else if (player.hasPermission("spoutflight.fly")) {
 			flightPerm = player.hasPermission("spoutflight.fly");
+		} else if (plugin.getConfig().useOps()) {
+			flightPerm = player.isOp();
 		}
 
 		if (plugin.getBindMode(player)) {
@@ -68,7 +70,9 @@ public class Keys extends InputListener {
 					player.setCanFly(true);
 					player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
 					player.setGravityMultiplier(0);
+
 				}
+
 				player.setVelocity(new Vector(0, 0, 0));
 
 			}

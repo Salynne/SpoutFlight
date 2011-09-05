@@ -29,9 +29,11 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 public class Keys extends InputListener {
 
 	SpoutFlight plugin;
+        boolean stopDrifting;
 
 	public Keys(SpoutFlight plugin) {
 		this.plugin = plugin;
+                stopDrifting = plugin.getConfig().stopDrifting();
 	}
 
 	@Override
@@ -109,22 +111,24 @@ public class Keys extends InputListener {
 				player.setGravityMultiplier(0);
 				player.setVelocity(new Vector(0, 0, 0));
 			}
+                        
+                        if(stopDrifting){
+                            if (event.getKey().equals(player.getForwardKey())) {
+                                    player.setVelocity(new Vector(0, 0, 0));
+                            }
 
-			else if (event.getKey().equals(player.getForwardKey())) {
-				player.setVelocity(new Vector(0, 0, 0));
-			}
+                            else if (event.getKey().equals(player.getBackwardKey())) {
+                                    player.setVelocity(new Vector(0, 0, 0));
+                            }
 
-			else if (event.getKey().equals(player.getBackwardKey())) {
-				player.setVelocity(new Vector(0, 0, 0));
-			}
+                            else if (event.getKey().equals(player.getLeftKey())) {
+                                    player.setVelocity(new Vector(0, 0, 0));
+                            }
 
-			else if (event.getKey().equals(player.getLeftKey())) {
-				player.setVelocity(new Vector(0, 0, 0));
-			}
-
-			else if (event.getKey().equals(player.getRightKey())) {
-				player.setVelocity(new Vector(0, 0, 0));
-			}
+                            else if (event.getKey().equals(player.getRightKey())) {
+                                    player.setVelocity(new Vector(0, 0, 0));
+                            }
+                        }
 		}
 
 	}

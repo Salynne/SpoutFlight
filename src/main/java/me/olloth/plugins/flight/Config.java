@@ -35,6 +35,8 @@ public class Config {
 		load();
 
 		loadMaps();
+                
+                
 	}
 
 	public void load() {
@@ -42,9 +44,10 @@ public class Config {
 		config.load();
 		
 		getDefaultSpeed();
-		
-		config.save();
-
+                useOps();
+                stopDrifting();
+                        
+                config.save();
 	}
 
 	public int getDefaultSpeed() {
@@ -59,7 +62,11 @@ public class Config {
 	}
 	
 	public boolean useOps() {
-		return config.getBoolean("useOps", true);
+                return config.getBoolean("useOps", true);    
+	}
+        
+        public boolean stopDrifting() {
+                return config.getBoolean("stopDrifting", true);     
 	}
 
 	@SuppressWarnings("unchecked")

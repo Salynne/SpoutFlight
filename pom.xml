@@ -7,6 +7,10 @@
 	<name>SpoutFlight</name>
 	<repositories>
 		<repository>
+			<id>gestdown-repo</id>
+			<url>http://gestdown.info:8888/artifactory/repo/</url>
+		</repository>
+		<repository>
 			<id>bukkit-repo</id>
 			<url>http://repo.bukkit.org/artifactory/repo</url>
 		</repository>

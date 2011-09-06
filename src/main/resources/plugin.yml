@@ -5,7 +5,7 @@ description: Flight for Spout
 main: me.olloth.plugins.flight.SpoutFlight
 name: SpoutFlight
 startup: postworld
-version: '0.14'
+version: '1.0'
 depend: [Spout]
 permissions:
     spoutflight.fly:
@@ -20,5 +20,6 @@ commands:
      permission: spoutflight.fly
     sfbind:
      description: Sets your keybind for flying
+     aliases: [flybind]
      usage: /<command>
      permission: spoutflight.fly

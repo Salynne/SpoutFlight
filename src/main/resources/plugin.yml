@@ -5,7 +5,7 @@ description: Flight for Spout
 main: me.olloth.plugins.flight.SpoutFlight
 name: SpoutFlight
 startup: postworld
-version: '0.12'
+version: '0.14'
 depend: [Spout]
 permissions:
     spoutflight.fly:
@@ -15,7 +15,7 @@ permissions:
 commands:
     sfspeed:
      description: Sets your flying speed
-     usage: /<command> [speed 1-10]
+     usage: /<command> [speed 1-max speed]
      aliases: [fly]
      permission: spoutflight.fly
     sfbind:

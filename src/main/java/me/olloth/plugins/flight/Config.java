@@ -35,38 +35,47 @@ public class Config {
 		load();
 
 		loadMaps();
-                
-                
+
 	}
 
 	public void load() {
 		config = new Configuration(configFile);
 		config.load();
-		
+
 		getDefaultSpeed();
-                useOps();
-                stopDrifting();
-                        
-                config.save();
+		useOps();
+		stopDrifting();
+		getMaxSpeed();
+		sendNotifications();
+
+		config.save();
 	}
 
 	public int getDefaultSpeed() {
 		int speed = config.getInt("default_speed", 5);
 		if (speed < 1) {
 			speed = 1;
-		} else if (speed > 20) {
-			speed = 10;
+		} else if (speed > getMaxSpeed()) {
+			speed = getMaxSpeed();
 		}
 
 		return speed;
 	}
-	
+
 	public boolean useOps() {
-                return config.getBoolean("useOps", true);    
+		return config.getBoolean("useOps", true);
 	}
-        
-        public boolean stopDrifting() {
-                return config.getBoolean("stopDrifting", true);     
+
+	public boolean stopDrifting() {
+		return config.getBoolean("stopDrifting", true);
+	}
+	
+	public int getMaxSpeed() {
+		return config.getInt("maxSpeed", 10);
+	}
+	
+	public boolean sendNotifications() {
+		return config.getBoolean("sendNotifications", true);
 	}
 
 	@SuppressWarnings("unchecked")

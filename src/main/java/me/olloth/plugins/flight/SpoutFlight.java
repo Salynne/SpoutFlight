@@ -138,16 +138,22 @@ public class SpoutFlight extends JavaPlugin {
 				commandSuccess = true;
 
 			} else {
-				int speed = Integer.parseInt(args[0]);
-				if (speed < 1) {
-					speed = 1;
-				} else if (speed > 10) {
-					speed = 10;
-				}
-				setPlayerSpeed(player, speed);
-				player.sendMessage("Your current speed is " + speed);
+				
+				try {
+					int speed = Integer.parseInt(args[0]);
+					if (speed < 1) {
+						speed = 1;
+					} else if (speed > config.getMaxSpeed()) {
+						speed = config.getMaxSpeed();
+					}
+					setPlayerSpeed(player, speed);
+					player.sendMessage("Your current speed is " + speed);
 
-				commandSuccess = true;
+					commandSuccess = true;
+				} catch (NumberFormatException e) {
+					commandSuccess = false;
+				}
+
 			}
 
 		}

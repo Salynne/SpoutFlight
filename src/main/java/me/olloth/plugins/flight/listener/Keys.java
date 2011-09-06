@@ -19,6 +19,7 @@ package me.olloth.plugins.flight.listener;
 
 import me.olloth.plugins.flight.SpoutFlight;
 
+import org.bukkit.Material;
 import org.bukkit.util.Vector;
 import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
@@ -29,11 +30,11 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 public class Keys extends InputListener {
 
 	SpoutFlight plugin;
-        boolean stopDrifting;
+	boolean stopDrifting;
 
 	public Keys(SpoutFlight plugin) {
 		this.plugin = plugin;
-                stopDrifting = plugin.getConfig().stopDrifting();
+		stopDrifting = plugin.getConfig().stopDrifting();
 	}
 
 	@Override
@@ -41,12 +42,14 @@ public class Keys extends InputListener {
 		SpoutPlayer player = event.getPlayer();
 		boolean flightPerm = false;
 
-		if (plugin.useOldPerms()) {
-			flightPerm = plugin.getOldPermissions().has(player, "spoutflight.fly");
-		} else if (player.hasPermission("spoutflight.fly")) {
-			flightPerm = player.hasPermission("spoutflight.fly");
-		} else if (plugin.getConfig().useOps()) {
+		if (plugin.getConfig().useOps()) {
 			flightPerm = player.isOp();
+		} else if (plugin.useOldPerms()) {
+			if (plugin.getOldPermissions().has(player, "spoutflight.fly")) {
+				flightPerm = true;
+			}
+		} else if (player.hasPermission("spoutflight.fly")) {
+			flightPerm = true;
 		}
 
 		if (plugin.getBindMode(player)) {
@@ -62,8 +65,10 @@ public class Keys extends InputListener {
 					plugin.setPlayerEnabled(player, false);
 					player.setAirSpeedMultiplier(1);
 					player.setGravityMultiplier(1);
-					player.setCanFly(false);
 					player.setFallDistance(0);
+					if (plugin.getConfig().sendNotifications()) {
+						player.sendNotification("SpoutFlight", "Flying disabled!", Material.FEATHER);
+					}
 
 				}
 
@@ -72,6 +77,9 @@ public class Keys extends InputListener {
 					player.setCanFly(true);
 					player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
 					player.setGravityMultiplier(0);
+					if (plugin.getConfig().sendNotifications()) {
+						player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);
+					}
 
 				}
 
@@ -111,24 +119,24 @@ public class Keys extends InputListener {
 				player.setGravityMultiplier(0);
 				player.setVelocity(new Vector(0, 0, 0));
 			}
-                        
-                        if(stopDrifting){
-                            if (event.getKey().equals(player.getForwardKey())) {
-                                    player.setVelocity(new Vector(0, 0, 0));
-                            }
 
-                            else if (event.getKey().equals(player.getBackwardKey())) {
-                                    player.setVelocity(new Vector(0, 0, 0));
-                            }
+			if (stopDrifting) {
+				if (event.getKey().equals(player.getForwardKey())) {
+					player.setVelocity(new Vector(0, 0, 0));
+				}
 
-                            else if (event.getKey().equals(player.getLeftKey())) {
-                                    player.setVelocity(new Vector(0, 0, 0));
-                            }
+				else if (event.getKey().equals(player.getBackwardKey())) {
+					player.setVelocity(new Vector(0, 0, 0));
+				}
 
-                            else if (event.getKey().equals(player.getRightKey())) {
-                                    player.setVelocity(new Vector(0, 0, 0));
-                            }
-                        }
+				else if (event.getKey().equals(player.getLeftKey())) {
+					player.setVelocity(new Vector(0, 0, 0));
+				}
+
+				else if (event.getKey().equals(player.getRightKey())) {
+					player.setVelocity(new Vector(0, 0, 0));
+				}
+			}
 		}
 
 	}

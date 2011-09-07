@@ -44,7 +44,9 @@ public class Keys extends InputListener {
 
 		if (plugin.getConfig().useOps()) {
 			flightPerm = player.isOp();
-		} else if (plugin.useOldPerms()) {
+		}
+		
+		if (plugin.useOldPerms()) {
 			if (plugin.getOldPermissions().has(player, "spoutflight.fly")) {
 				flightPerm = true;
 			}

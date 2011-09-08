@@ -36,7 +36,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -66,6 +68,10 @@ public class SpoutFlight extends JavaPlugin {
 	private Map<String, Boolean> bindMode;
 
 	public void onDisable() {
+		for(SpoutPlayer player : SpoutManager.getPlayerManager().getOnlinePlayers()) {
+			player.setGravityMultiplier(1);
+			player.setAirSpeedMultiplier(1);
+		}
 		config.saveMaps();
 		log.log(Level.INFO, PREFIX + "is now disabled.");
 	}

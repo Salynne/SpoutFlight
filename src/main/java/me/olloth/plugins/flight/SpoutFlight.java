@@ -110,7 +110,7 @@ public class SpoutFlight extends JavaPlugin {
 
 		oldPermissions = this.getServer().getPluginManager().getPlugin("Permissions");
 
-		if (oldPermissions != null) {
+		if (oldPermissions != null && config.useOldPermissions()) {
 			useOldPerms = true;
 			permissionHandler = ((Permissions) oldPermissions).getHandler();
 			log.log(Level.INFO, PREFIX + "Found and will use plugin " + oldPermissions.getDescription().getFullName());

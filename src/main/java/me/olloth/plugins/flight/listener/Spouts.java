@@ -35,6 +35,7 @@ public class Spouts extends SpoutListener {
 		if (plugin.getPlayerEnabled(event.getPlayer())) {
 			event.getPlayer().setCanFly(true);
 			event.getPlayer().setGravityMultiplier(0);
+			event.getPlayer().setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(event.getPlayer()));
 		}
 
 	}

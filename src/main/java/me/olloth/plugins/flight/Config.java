@@ -47,6 +47,7 @@ public class Config {
 		stopDrifting();
 		getMaxSpeed();
 		sendNotifications();
+		useOldPermissions();
 
 		config.save();
 	}
@@ -64,6 +65,10 @@ public class Config {
 
 	public boolean useOps() {
 		return config.getBoolean("useOps", true);
+	}
+	
+	public boolean useOldPermissions() {
+		return config.getBoolean("useOldPermissions", false);
 	}
 
 	public boolean stopDrifting() {

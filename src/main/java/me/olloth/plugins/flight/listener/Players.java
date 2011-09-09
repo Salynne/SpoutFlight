@@ -38,6 +38,7 @@ public class Players extends PlayerListener {
 		if (!event.getFrom().getWorld().getName().equals(event.getTo().getWorld().getName())) {
 			plugin.setPlayerEnabled(event.getPlayer(), false);
 			SpoutManager.getPlayer(event.getPlayer()).setGravityMultiplier(1);
+			SpoutManager.getPlayer(event.getPlayer()).setAirSpeedMultiplier(1);
 		}
 	}
 
@@ -45,17 +46,20 @@ public class Players extends PlayerListener {
 	public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 		plugin.setPlayerEnabled(event.getPlayer(), false);
 		SpoutManager.getPlayer(event.getPlayer()).setGravityMultiplier(1);
+		SpoutManager.getPlayer(event.getPlayer()).setAirSpeedMultiplier(1);
 	}
 
 	@Override
 	public void onPlayerPortal(PlayerPortalEvent event) {
 		plugin.setPlayerEnabled(event.getPlayer(), false);
 		SpoutManager.getPlayer(event.getPlayer()).setGravityMultiplier(1);
+		SpoutManager.getPlayer(event.getPlayer()).setAirSpeedMultiplier(1);
 	}
 
 	@Override
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		plugin.setPlayerEnabled(event.getPlayer(), false);
 		SpoutManager.getPlayer(event.getPlayer()).setGravityMultiplier(1);
+		SpoutManager.getPlayer(event.getPlayer()).setAirSpeedMultiplier(1);
 	}
 }

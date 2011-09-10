@@ -97,7 +97,7 @@ public class SpoutFlight extends JavaPlugin {
 		}
 
 		players = new Players(this);
-		pm.registerEvent(Type.PLAYER_TELEPORT, players, Priority.Low, this);
+		pm.registerEvent(Type.PLAYER_TELEPORT, players, Priority.Monitor, this);
 		pm.registerEvent(Type.PLAYER_BED_ENTER, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_PORTAL, players, Priority.Low, this);
 		pm.registerEvent(Type.PLAYER_RESPAWN, players, Priority.Low, this);

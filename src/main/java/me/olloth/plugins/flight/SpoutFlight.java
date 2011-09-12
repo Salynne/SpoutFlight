@@ -63,6 +63,7 @@ public class SpoutFlight extends JavaPlugin {
 	private Config config;
 
 	private Map<String, Boolean> enabled;
+	private Map<String, Double> gravitys;
 	private Map<String, Integer> speeds;
 	private Map<String, Integer> binds;
 	private Map<String, Boolean> bindMode;
@@ -84,6 +85,7 @@ public class SpoutFlight extends JavaPlugin {
 		pm = getServer().getPluginManager();
 
 		enabled = new HashMap<String, Boolean>();
+		gravitys = new HashMap<String, Double>();
 		speeds = new HashMap<String, Integer>();
 		binds = new HashMap<String, Integer>();
 		bindMode = new HashMap<String, Boolean>();
@@ -200,6 +202,18 @@ public class SpoutFlight extends JavaPlugin {
 
 		return speeds.get(player.getName());
 	}
+	
+	public void setPlayerGravity(Player player, double gravity) {
+	    	gravitys.put(player.getName(), gravity);
+	}
+	
+	public double getPlayerGravity(Player player) {
+		if (!gravitys.containsKey(player.getName())) {
+			setPlayerGravity(player, config.getDefaultSpeed());
+		}
+
+		return speeds.get(player.getName());
+	}
 
 	public void setPlayerBind(Player player, int bind) {
 		binds.put(player.getName(), bind);
@@ -242,6 +256,14 @@ public class SpoutFlight extends JavaPlugin {
 
 	public Map<String, Integer> getBindsMap() {
 		return binds;
+	}
+	
+	public void setGravityMap(Map<String, Double> map) {
+	    	gravitys = map;
+	}
+	
+	public Map<String, Double> getGravityMap() {
+	    	return gravitys;
 	}
 
 	public Config getConfig() {

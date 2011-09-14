@@ -44,9 +44,11 @@ public class Config {
 		config.load();
 
 		getDefaultSpeed();
+		getDefaultGravity();
 		useOps();
 		stopDrifting();
 		getMaxSpeed();
+		getMaxGravity();
 		sendNotifications();
 		useOldPermissions();
 
@@ -130,7 +132,7 @@ public class Config {
 
 	public void saveMaps() {
 		saveMap(plugin.getEnabledMap(), enableMap.getPath());
+		saveMap(plugin.getGravityMap(), gravityMap.getPath());
 		saveMap(plugin.getBindsMap(), bindsMap.getPath());
-
 	}
 }

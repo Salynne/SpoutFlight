@@ -209,10 +209,10 @@ public class SpoutFlight extends JavaPlugin {
 	
 	public double getPlayerGravity(Player player) {
 		if (!gravitys.containsKey(player.getName())) {
-			setPlayerGravity(player, config.getDefaultSpeed());
+			setPlayerGravity(player, config.getDefaultGravity());
 		}
 
-		return speeds.get(player.getName());
+		return gravitys.get(player.getName());
 	}
 
 	public void setPlayerBind(Player player, int bind) {

@@ -8,6 +8,7 @@ import org.bukkit.util.config.Configuration;
 public class Config {
 	private File enableMap;
 	private File bindsMap;
+	private File gravityMap;
 	private File directory;
 	private File configFile;
 	private Configuration config;
@@ -43,9 +44,11 @@ public class Config {
 		config.load();
 
 		getDefaultSpeed();
+		getDefaultGravity();
 		useOps();
 		stopDrifting();
 		getMaxSpeed();
+		getMaxGravity();
 		sendNotifications();
 		useOldPermissions();
 
@@ -61,6 +64,17 @@ public class Config {
 		}
 
 		return speed;
+	}
+	
+	public double getDefaultGravity() {
+	    	double gravity = config.getDouble("default_gravity", 1);
+	    	if (gravity < 0) {
+	    	    gravity = 0.1D;
+	    	} else if (gravity > getMaxGravity()) {
+	    	    gravity = getMaxGravity();
+	    	}
+	    
+	    	return gravity;
 	}
 
 	public boolean useOps() {
@@ -79,6 +93,10 @@ public class Config {
 		return config.getInt("maxSpeed", 10);
 	}
 	
+	public double getMaxGravity() {
+	    	return config.getDouble("maxGravity", 2);
+	}
+	
 	public boolean sendNotifications() {
 		return config.getBoolean("sendNotifications", true);
 	}
@@ -87,6 +105,7 @@ public class Config {
 	public void loadMaps() {
 		enableMap = new File(directory, "flying.bin");
 		bindsMap = new File(directory, "binds.bin");
+		gravityMap = new File(directory, "gravity.bin");
 		if (!enableMap.exists()) {
 			saveMap(plugin.getEnabledMap(), enableMap.getPath());
 		} else {
@@ -98,6 +117,12 @@ public class Config {
 		} else {
 			plugin.setBindsMap((Map<String, Integer>) HMapSL.load(bindsMap.getPath()));
 		}
+		
+		if (!gravityMap.exists()) {
+		    	saveMap(plugin.getGravityMap(), gravityMap.getPath());
+		} else {
+		    	plugin.setGravityMap((Map<String, Double>) HMapSL.load(gravityMap.getPath()));
+		}
 	}
 
 	public void saveMap(Map<String, ?> map, String path) {
@@ -107,7 +132,7 @@ public class Config {
 
 	public void saveMaps() {
 		saveMap(plugin.getEnabledMap(), enableMap.getPath());
+		saveMap(plugin.getGravityMap(), gravityMap.getPath());
 		saveMap(plugin.getBindsMap(), bindsMap.getPath());
-
 	}
 }

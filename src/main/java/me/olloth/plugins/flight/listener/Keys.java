@@ -66,7 +66,7 @@ public class Keys extends InputListener {
 				if (plugin.getPlayerEnabled(player)) {
 					plugin.setPlayerEnabled(player, false);
 					player.setAirSpeedMultiplier(1);
-					player.setGravityMultiplier(1);
+					player.setGravityMultiplier(plugin.getPlayerGravity(player));
 					player.setFallDistance(0);
 					if (plugin.getConfig().sendNotifications()) {
 						player.sendNotification("SpoutFlight", "Flying disabled!", Material.FEATHER);
@@ -78,6 +78,7 @@ public class Keys extends InputListener {
 					plugin.setPlayerEnabled(player, true);
 					player.setCanFly(true);
 					player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
+					plugin.setPlayerGravity(player, player.getGravityMultiplier());
 					player.setGravityMultiplier(0);
 					if (plugin.getConfig().sendNotifications()) {
 						player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);

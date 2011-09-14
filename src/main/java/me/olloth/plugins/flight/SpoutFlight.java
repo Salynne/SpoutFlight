@@ -68,13 +68,6 @@ public class SpoutFlight extends JavaPlugin {
 	private Map<String, Boolean> bindMode;
 
 	public void onDisable() {
-		if (SpoutManager.getPlayerManager().getOnlinePlayers() != null) {
-			for (SpoutPlayer player : SpoutManager.getPlayerManager().getOnlinePlayers()) {
-				player.setGravityMultiplier(1);
-				player.setAirSpeedMultiplier(1);
-			}
-		}
-
 		config.saveMaps();
 		log.log(Level.INFO, PREFIX + "is now disabled.");
 	}

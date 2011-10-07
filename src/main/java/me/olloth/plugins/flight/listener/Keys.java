@@ -94,11 +94,11 @@ public class Keys extends InputListener {
 
 				player.setAirSpeedMultiplier(1 * plugin.getPlayerSpeed(player));
 
-				if (event.getKey().equals(player.getJumpKey())) {
+				if (event.getKey().equals(Keyboard.KEY_E())) {
 					player.setGravityMultiplier(-0.1 * plugin.getPlayerSpeed(player));
 				}
 
-				else if (event.getKey().equals(player.getSneakKey())) {
+				else if (event.getKey().equals(Keyboard.KEY_Q())) {
 					player.setGravityMultiplier(0.1 * plugin.getPlayerSpeed(player));
 				}
 

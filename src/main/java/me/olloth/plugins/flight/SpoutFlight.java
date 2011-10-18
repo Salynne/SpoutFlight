@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.olloth.plugins.flight.keys.MovementKey;
+import me.olloth.plugins.flight.keys.ToggleKey;
+import me.olloth.plugins.flight.keys.UpDownKey;
 import me.olloth.plugins.flight.listener.Entities;
-import me.olloth.plugins.flight.listener.Keys;
 import me.olloth.plugins.flight.listener.Players;
 import me.olloth.plugins.flight.listener.Spouts;
 
@@ -36,6 +38,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.keyboard.KeyBindingManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -55,7 +59,6 @@ public class SpoutFlight extends JavaPlugin {
 
 	private Players players;
 	private Spouts spouts;
-	private Keys keys;
 	private Entities entities;
 
 	private Config config;
@@ -63,8 +66,6 @@ public class SpoutFlight extends JavaPlugin {
 	private Map<String, Boolean> enabled;
 	private Map<String, Double> gravitys;
 	private Map<String, Integer> speeds;
-	private Map<String, Integer> binds;
-	private Map<String, Boolean> bindMode;
 
 	public void onDisable() {
 		config.saveMaps();
@@ -78,8 +79,7 @@ public class SpoutFlight extends JavaPlugin {
 		enabled = new HashMap<String, Boolean>();
 		gravitys = new HashMap<String, Double>();
 		speeds = new HashMap<String, Integer>();
-		binds = new HashMap<String, Integer>();
-		bindMode = new HashMap<String, Boolean>();
+
 		config = new Config(this);
 
 		useOldPerms = false;
@@ -101,10 +101,22 @@ public class SpoutFlight extends JavaPlugin {
 		spouts = new Spouts(this);
 		pm.registerEvent(Type.CUSTOM_EVENT, spouts, Priority.Low, this);
 
-		keys = new Keys(this);
-		pm.registerEvent(Type.CUSTOM_EVENT, keys, Priority.Low, this);
-
 		oldPermissions = this.getServer().getPluginManager().getPlugin("Permissions");
+		
+		KeyBindingManager kbm = SpoutManager.getKeyBindingManager();
+		try {
+			kbm.registerBinding("SpoutFlight.Toggle", Keyboard.KEY_LCONTROL, "The key to toggle flying on/off", new ToggleKey(this), this);
+			kbm.registerBinding("SpoutFlight.Up", Keyboard.KEY_SPACE, "The key to fly up", new UpDownKey(this, -0.1F), this);
+			kbm.registerBinding("SpoutFlight.Down", Keyboard.KEY_LSHIFT, "The key to fly down", new UpDownKey(this, 0.1F), this);
+			kbm.registerBinding("SpoutFlight.Forward", Keyboard.KEY_W, "The key to move forward", new MovementKey(this), this);
+			kbm.registerBinding("SpoutFlight.Backward", Keyboard.KEY_S, "The key to move backward", new MovementKey(this), this);
+			kbm.registerBinding("SpoutFlight.Left", Keyboard.KEY_A, "The key to move left", new MovementKey(this), this);
+			kbm.registerBinding("SpoutFlight.Right", Keyboard.KEY_D, "The key to move right", new MovementKey(this), this);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (oldPermissions != null && config.useOldPermissions()) {
 			useOldPerms = true;
@@ -160,14 +172,6 @@ public class SpoutFlight extends JavaPlugin {
 
 		}
 
-		if (commandName.equals("sfbind")) {
-			Player player = (Player) sender;
-			bindMode.put(player.getName(), true);
-			sender.sendMessage("Press any key to bind it to the flight toggle key.");
-
-			commandSuccess = true;
-		}
-
 		return commandSuccess;
 	}
 
@@ -184,6 +188,7 @@ public class SpoutFlight extends JavaPlugin {
 
 	public void setPlayerSpeed(Player player, int speed) {
 		speeds.put(player.getName(), speed);
+		SpoutManager.getPlayer(player).setAirSpeedMultiplier(1 * speed);
 	}
 
 	public int getPlayerSpeed(Player player) {
@@ -206,47 +211,12 @@ public class SpoutFlight extends JavaPlugin {
 		return gravitys.get(player.getName());
 	}
 
-	public void setPlayerBind(Player player, int bind) {
-		binds.put(player.getName(), bind);
-	}
-
-	public int getPlayerBind(Player player) {
-		if (!binds.containsKey(player.getName())) {
-			setPlayerBind(player, Keyboard.KEY_LCONTROL.getKeyCode());
-		}
-		return binds.get(player.getName());
-	}
-
-	public boolean getBindMode(Player player) {
-		boolean mode = false;
-
-		if (bindMode.containsKey(player.getName())) {
-			mode = bindMode.get(player.getName());
-		}
-
-		return mode;
-	}
-
-	public void removeBindMode(Player player) {
-		if (bindMode.containsKey(player.getName())) {
-			bindMode.remove(player.getName());
-		}
-	}
-
 	public void setEnabledMap(Map<String, Boolean> map) {
 		enabled = map;
 	}
 
 	public Map<String, Boolean> getEnabledMap() {
 		return enabled;
-	}
-
-	public void setBindsMap(Map<String, Integer> map) {
-		binds = map;
-	}
-
-	public Map<String, Integer> getBindsMap() {
-		return binds;
 	}
 	
 	public void setGravityMap(Map<String, Double> map) {

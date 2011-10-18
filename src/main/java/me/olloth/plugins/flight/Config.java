@@ -7,7 +7,6 @@ import org.bukkit.util.config.Configuration;
 
 public class Config {
 	private File enableMap;
-	private File bindsMap;
 	private File gravityMap;
 	private File directory;
 	private File configFile;
@@ -65,22 +64,22 @@ public class Config {
 
 		return speed;
 	}
-	
+
 	public double getDefaultGravity() {
-	    	double gravity = config.getDouble("default_gravity", 1);
-	    	if (gravity < 0) {
-	    	    gravity = 0.1D;
-	    	} else if (gravity > getMaxGravity()) {
-	    	    gravity = getMaxGravity();
-	    	}
-	    
-	    	return gravity;
+		double gravity = config.getDouble("default_gravity", 1);
+		if (gravity < 0) {
+			gravity = 0.1D;
+		} else if (gravity > getMaxGravity()) {
+			gravity = getMaxGravity();
+		}
+
+		return gravity;
 	}
 
 	public boolean useOps() {
 		return config.getBoolean("useOps", true);
 	}
-	
+
 	public boolean useOldPermissions() {
 		return config.getBoolean("useOldPermissions", false);
 	}
@@ -88,15 +87,15 @@ public class Config {
 	public boolean stopDrifting() {
 		return config.getBoolean("stopDrifting", true);
 	}
-	
+
 	public int getMaxSpeed() {
 		return config.getInt("maxSpeed", 10);
 	}
-	
+
 	public double getMaxGravity() {
-	    	return config.getDouble("maxGravity", 2);
+		return config.getDouble("maxGravity", 2);
 	}
-	
+
 	public boolean sendNotifications() {
 		return config.getBoolean("sendNotifications", true);
 	}
@@ -104,7 +103,7 @@ public class Config {
 	@SuppressWarnings("unchecked")
 	public void loadMaps() {
 		enableMap = new File(directory, "flying.bin");
-		bindsMap = new File(directory, "binds.bin");
+
 		gravityMap = new File(directory, "gravity.bin");
 		if (!enableMap.exists()) {
 			saveMap(plugin.getEnabledMap(), enableMap.getPath());
@@ -112,27 +111,19 @@ public class Config {
 			plugin.setEnabledMap((Map<String, Boolean>) HMapSL.load(enableMap.getPath()));
 		}
 
-		if (!bindsMap.exists()) {
-			saveMap(plugin.getBindsMap(), bindsMap.getPath());
-		} else {
-			plugin.setBindsMap((Map<String, Integer>) HMapSL.load(bindsMap.getPath()));
-		}
-		
 		if (!gravityMap.exists()) {
-		    	saveMap(plugin.getGravityMap(), gravityMap.getPath());
+			saveMap(plugin.getGravityMap(), gravityMap.getPath());
 		} else {
-		    	plugin.setGravityMap((Map<String, Double>) HMapSL.load(gravityMap.getPath()));
+			plugin.setGravityMap((Map<String, Double>) HMapSL.load(gravityMap.getPath()));
 		}
 	}
 
 	public void saveMap(Map<String, ?> map, String path) {
 		HMapSL.save(map, path);
-
 	}
 
 	public void saveMaps() {
 		saveMap(plugin.getEnabledMap(), enableMap.getPath());
 		saveMap(plugin.getGravityMap(), gravityMap.getPath());
-		saveMap(plugin.getBindsMap(), bindsMap.getPath());
 	}
 }

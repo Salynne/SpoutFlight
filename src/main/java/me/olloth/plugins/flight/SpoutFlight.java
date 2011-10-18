@@ -227,7 +227,7 @@ public class SpoutFlight extends JavaPlugin {
 	    	return gravitys;
 	}
 
-	public Config getConfig() {
+	public Config getSFConfig() {
 		return config;
 	}
 

@@ -14,7 +14,7 @@ public class MovementKey implements BindingExecutionDelegate {
 	
 	public MovementKey(SpoutFlight plugin) {
 		this.plugin = plugin;
-		stopDrifting = plugin.getConfig().stopDrifting();
+		stopDrifting = plugin.getSFConfig().stopDrifting();
 	}
 
 	@Override

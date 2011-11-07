@@ -63,9 +63,9 @@ public class SpoutFlight extends JavaPlugin {
 
 	private Config config;
 
-	private Map<String, Boolean> enabled;
-	private Map<String, Double> gravitys;
-	private Map<String, Integer> speeds;
+	final private Map<String, Boolean> enabled = new HashMap<String, Boolean>();
+	final private Map<String, Double> gravitys = new HashMap<String, Double>();
+	final private Map<String, Integer> speeds = new HashMap<String, Integer>();
 
 	public void onDisable() {
 		config.saveMaps();
@@ -75,10 +75,6 @@ public class SpoutFlight extends JavaPlugin {
 	public void onEnable() {
 		info = getDescription();
 		pm = getServer().getPluginManager();
-
-		enabled = new HashMap<String, Boolean>();
-		gravitys = new HashMap<String, Double>();
-		speeds = new HashMap<String, Integer>();
 
 		config = new Config(this);
 
@@ -176,10 +172,28 @@ public class SpoutFlight extends JavaPlugin {
 	}
 
 	public void setPlayerEnabled(Player player, boolean enable) {
+		if( enabled == null ) {
+			log.severe("SpoutFlight: setPlayerEnabled, enabled map is null");
+			return; 
+		}
+	    if( player == null ) {
+			log.warning("SpoutFlight: setPlayerEnabled, player is null");
+			return;
+	    }
+		
 		enabled.put(player.getName(), enable);
 	}
 
 	public boolean getPlayerEnabled(Player player) {
+		if( enabled == null ) {
+			log.severe("SpoutFlight: getPlayerEnabled, enabled map is null");
+			return false; 
+		}
+	    if( player == null ) {
+			log.warning("SpoutFlight: getPlayerEnabled, player is null");
+			return false;
+	    }
+		
 		if (!enabled.containsKey(player.getName())) {
 			setPlayerEnabled(player, false);
 		}
@@ -212,7 +226,9 @@ public class SpoutFlight extends JavaPlugin {
 	}
 
 	public void setEnabledMap(Map<String, Boolean> map) {
-		enabled = map;
+		enabled.clear();
+		if( map != null )
+			enabled.putAll(map);
 	}
 
 	public Map<String, Boolean> getEnabledMap() {
@@ -220,7 +236,9 @@ public class SpoutFlight extends JavaPlugin {
 	}
 	
 	public void setGravityMap(Map<String, Double> map) {
-	    	gravitys = map;
+		gravitys.clear();
+		if( map != null )
+			gravitys.putAll(map);
 	}
 	
 	public Map<String, Double> getGravityMap() {

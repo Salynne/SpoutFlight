@@ -31,7 +31,9 @@ public class Spouts extends SpoutListener {
 
 	@Override
 	public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
-
+		if( event.getPlayer() == null )
+			return;
+		
 		if (plugin.getPlayerEnabled(event.getPlayer())) {
 			event.getPlayer().setCanFly(true);
 			event.getPlayer().setGravityMultiplier(0);

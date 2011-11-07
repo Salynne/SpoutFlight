@@ -19,14 +19,14 @@ public class UpDownKey implements BindingExecutionDelegate {
 
 	@Override
 	public void keyPressed(KeyBindingEvent event) {
-		if (event.getScreenType().equals(ScreenType.GAME_SCREEN)) {
+		if (event.getScreenType().equals(ScreenType.GAME_SCREEN) && plugin.getPlayerEnabled(event.getPlayer())) {
 			event.getPlayer().setGravityMultiplier(direction * plugin.getPlayerSpeed(event.getPlayer()));
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyBindingEvent event) {
-		if (event.getScreenType().equals(ScreenType.GAME_SCREEN)) {
+		if (event.getScreenType().equals(ScreenType.GAME_SCREEN) && plugin.getPlayerEnabled(event.getPlayer())) {
 			event.getPlayer().setGravityMultiplier(0);
 			event.getPlayer().setVelocity(new Vector(0, 0, 0));
 		}

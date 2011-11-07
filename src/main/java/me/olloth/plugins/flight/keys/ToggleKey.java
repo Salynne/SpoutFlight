@@ -36,7 +36,7 @@ public class ToggleKey implements BindingExecutionDelegate {
 			flightPerm = true;
 		}
 
-		else if (event.getScreenType().toString().equals("GAME_SCREEN") && flightPerm) {
+		if (event.getScreenType().toString().equals("GAME_SCREEN") && flightPerm) {
 
 			if (plugin.getPlayerEnabled(player)) {
 				plugin.setPlayerEnabled(player, false);

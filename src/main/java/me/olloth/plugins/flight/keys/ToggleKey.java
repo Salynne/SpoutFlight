@@ -26,12 +26,6 @@ public class ToggleKey implements BindingExecutionDelegate {
 
 		if (plugin.getSFConfig().useOps()) {
 			flightPerm = player.isOp();
-		}
-
-		if (plugin.useOldPerms()) {
-			if (plugin.getOldPermissions().has(player, "spoutflight.fly")) {
-				flightPerm = true;
-			}
 		} else if (player.hasPermission("spoutflight.fly")) {
 			flightPerm = true;
 		}
@@ -55,7 +49,7 @@ public class ToggleKey implements BindingExecutionDelegate {
 				plugin.setPlayerGravity(player, player.getGravityMultiplier());
 				player.setGravityMultiplier(0);
 				if (plugin.getSFConfig().sendNotifications()) {
-					player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);
+                                    player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);
 				}
 			}
 

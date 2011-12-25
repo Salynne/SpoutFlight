@@ -9,28 +9,21 @@ import org.bukkit.event.entity.EntityListener;
 
 public class Entities extends EntityListener {
 
-	SpoutFlight plugin;
+    SpoutFlight plugin;
 
-	public Entities(SpoutFlight plugin) {
-		this.plugin = plugin;
-	}
+    public Entities(SpoutFlight plugin) {
+        this.plugin = plugin;
+    }
 
-	@Override
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.getCause().equals(DamageCause.FALL) && event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			boolean fallDmgPerm;
+    @Override
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getCause().equals(DamageCause.FALL) && event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
 
-			if (plugin.useOldPerms()) {
-				fallDmgPerm = plugin.getOldPermissions().has(player, "spoutflight.nofalldmg");
-			} else {
-				fallDmgPerm = player.hasPermission("spoutflight.nofalldmg");
-			}
-
-			if (plugin.getPlayerEnabled(player) || fallDmgPerm) {
-				event.setCancelled(true);
-			}
-		}
-	}
-
+            if (plugin.getPlayerEnabled(player) || player.hasPermission("spoutflight.nofalldmg")) {
+		event.setCancelled(true);
+            }
+        }
+    }
+    
 }

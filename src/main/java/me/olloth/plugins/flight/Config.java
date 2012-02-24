@@ -3,55 +3,26 @@ package me.olloth.plugins.flight;
 import java.io.File;
 import java.util.Map;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 	private File enableMap;
 	private File gravityMap;
 	private File directory;
-	private File configFile;
-	private Configuration config;
 
 	SpoutFlight plugin;
+	FileConfiguration config;
 
 	public Config(SpoutFlight plugin) {
 		this.plugin = plugin;
-		init();
-	}
+		this.plugin.getConfig().options().copyDefaults(true);
 
-	public void init() {
-		directory = plugin.getDataFolder();
-		configFile = new File(directory, "config.yml");
-		if (!directory.exists())
-			directory.mkdir();
-		if (!configFile.exists()) {
-			try {
-				configFile.createNewFile();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		if (!this.plugin.getConfigFile().exists())
+			this.plugin.saveConfig();
 
-		load();
-
+		this.config = this.plugin.getConfig();
+		
 		loadMaps();
-
-	}
-
-	public void load() {
-		config = new Configuration(configFile);
-		config.load();
-
-		getDefaultSpeed();
-		getDefaultGravity();
-		useOps();
-		stopDrifting();
-		getMaxSpeed();
-		getMaxGravity();
-		sendNotifications();
-		useOldPermissions();
-
-		config.save();
 	}
 
 	public int getDefaultSpeed() {
@@ -78,10 +49,6 @@ public class Config {
 
 	public boolean useOps() {
 		return config.getBoolean("useOps", true);
-	}
-
-	public boolean useOldPermissions() {
-		return config.getBoolean("useOldPermissions", false);
 	}
 
 	public boolean stopDrifting() {

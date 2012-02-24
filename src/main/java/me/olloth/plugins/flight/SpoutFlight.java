@@ -16,6 +16,7 @@
  */
 package me.olloth.plugins.flight;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -213,4 +214,7 @@ public class SpoutFlight extends SpoutPlugin {
 		return config;
 	}
 
+	public File getConfigFile() {
+		return new File(getDataFolder(), "config.yml");
+	}
 }

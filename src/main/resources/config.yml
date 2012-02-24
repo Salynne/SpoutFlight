@@ -1,0 +1,7 @@
+default_speed: 5
+default_gravity: 1
+useOps: true
+stopDrifting: true
+maxSpeed: 10
+maxGravity: 2
+sendNotifications: true

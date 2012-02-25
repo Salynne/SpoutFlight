@@ -49,7 +49,7 @@ public class ToggleKey implements BindingExecutionDelegate {
 				plugin.setPlayerGravity(player, player.getGravityMultiplier());
 				player.setGravityMultiplier(0);
 				if (plugin.getSFConfig().sendNotifications()) {
-                                    player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);
+					player.sendNotification("SpoutFlight", "Flying enabled!", Material.FEATHER);
 				}
 			}
 

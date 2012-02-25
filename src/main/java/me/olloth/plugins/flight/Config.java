@@ -16,6 +16,8 @@ public class Config {
 	public Config(SpoutFlight plugin) {
 		this.plugin = plugin;
 		this.plugin.getConfig().options().copyDefaults(true);
+		
+		directory = plugin.getDataFolder();
 
 		if (!this.plugin.getConfigFile().exists())
 			this.plugin.saveConfig();

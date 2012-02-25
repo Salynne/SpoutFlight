@@ -8,10 +8,10 @@ import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.keyboard.BindingExecutionDelegate;
 
 public class MovementKey implements BindingExecutionDelegate {
-	
+
 	SpoutFlight plugin;
 	boolean stopDrifting;
-	
+
 	public MovementKey(SpoutFlight plugin) {
 		this.plugin = plugin;
 		stopDrifting = plugin.getSFConfig().stopDrifting();
